@@ -1,0 +1,5 @@
+{
+	"app.storage": "Storage",
+	"app.storageerror": "There was a problem checking your storage usage.",
+	"app.used": "used"
+}

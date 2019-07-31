@@ -1,0 +1,15 @@
+<div class="inner">
+	<div class="title">{{t "app.storage"}}</div>
+	<div class="description">
+	{{#unless used}}
+	{{t "app.checking"}}
+	{{else}}
+	{{used}} / {{#if limit}}{{limit}} ({{percent}}%){{else}}∞{{/if}} {{t "app.used"}}
+	</div>
+	{{#if limit}}
+	<div class="bar">
+		<div class="fill" style="width:{{percent}}%;"></div>
+	</div>
+	{{/if}}
+	{{/unless}}
+</div>
