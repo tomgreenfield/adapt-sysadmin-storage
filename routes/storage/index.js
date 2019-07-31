@@ -18,7 +18,7 @@ server.get("/storage", function(req, res, next) {
 		const used = parseInt(output.split(/\D/)[0], 10);
 		const limit = bytes.parse(configuration.getConfig("storageLimit")) || null;
 
-		return res.status(200).json({
+		res.status(200).json({
 			used: getSizeString(used),
 			limit: getSizeString(limit),
 			percent: Math.round(used / limit * 100)
