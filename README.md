@@ -2,8 +2,6 @@
 
 An authoring tool plugin to display storage usage.
 
-![](https://user-images.githubusercontent.com/922987/62214165-6870be00-b39c-11e9-8f77-78b463b1f4c6.png)
-
 ## Installation
 
 Note: requires [adapt-sysadmin](https://github.com/taylortom/adapt-sysadmin) to be installed.

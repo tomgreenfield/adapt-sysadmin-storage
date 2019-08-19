@@ -7,6 +7,10 @@ define([
 
 		name: "storage",
 
+		events: {
+			"click .plugins button": "onPluginsClick"
+		},
+
 		preRender: function() {
 			$.ajax({
 				url: "storage",
@@ -25,6 +29,10 @@ define([
 
 		postRender: function() {
 			this.setViewToReady();
+		},
+
+		onPluginsClick: function() {
+			Origin.router.navigateTo("pluginManagement");
 		}
 
 	}, { template: "storage" });
