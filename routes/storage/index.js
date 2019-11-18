@@ -1,6 +1,8 @@
 const bytes = require("bytes");
 const configuration = require("../../lib/configuration");
 const Folders = require("../../lib/outputmanager").Constants.Folders;
+const fs = require("fs");
+const logger = require("../../lib/logger");
 const path = require("path");
 const server = require("express")();
 const { spawn } = require("child_process");
@@ -33,17 +35,19 @@ const paths = {
 
 function getDiskUsage(directoryList) {
 	return new Promise((resolve, reject) => {
-		const childProcess = spawn("du", [ "-scB1" ].concat(directoryList));
-		const collateOutput = data => output += data.toString();
-		let output = "";
+		const validPaths = directoryList.filter(directory => fs.existsSync(directory));
 
-		childProcess.stdout.on("data", collateOutput);
-		childProcess.stderr.on("data", collateOutput);
-		
+		if (!validPaths.length && directoryList.length) return resolve(0);
+
+		const childProcess = spawn("du", [ "-scB1" ].concat(validPaths));
+		let output = "";
+		let error = "";
+
+		childProcess.stdout.on("data", data => output += data.toString());
+		childProcess.stderr.on("data", data => error += data.toString());
+
 		childProcess.on("close", code => {
-			if (code) reject(output);
-			
-			resolve(parseInt(output.match(/^(\d+)/gm).pop(), 10));
+			code ? reject(error) : resolve(parseInt(output.match(/^(\d+)/gm).pop(), 10));
 		});
 	});
 }
@@ -71,7 +75,8 @@ server.get("/storage", async function(req, res, next) {
 			...{ limit: getStats(limit) }
 		});
 	} catch(error) {
-		res.status(500).json({ output: error });
+		logger.log("error", error);
+		res.status(500).json({ error });
 	}
 });
 
