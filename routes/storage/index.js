@@ -35,7 +35,7 @@ const paths = {
 
 function getDiskUsage(directoryList) {
 	return new Promise((resolve, reject) => {
-		const validPaths = directoryList.filter(directory => fs.existsSync(directory));
+		const validPaths = directoryList.filter(fs.existsSync);
 
 		if (!validPaths.length && directoryList.length) return resolve(0);
 
